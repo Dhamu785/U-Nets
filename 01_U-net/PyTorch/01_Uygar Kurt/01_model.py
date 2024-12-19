@@ -9,7 +9,7 @@ import torch.nn as nn
 
 device = 'cuda' if t.cuda.is_available() else 'cpu'
 # %%
- 
+
 
 class DoubleConv:
     def __init__(self, in_channel, out_channels):
