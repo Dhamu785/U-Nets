@@ -1,14 +1,7 @@
-# %% imports and devicesetup
-
 import torch as t
-import os
-import shutil
-import numpy as np
-import matplotlib.pyplot as plt
 import torch.nn as nn
 
 device = 'cuda' if t.cuda.is_available() else 'cpu'
-# %%
 class DoubleConv(nn.Module):
     def __init__(self, in_channel, out_channels):
         super().__init__()
