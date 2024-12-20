@@ -19,7 +19,7 @@ class DoubleConv(nn.Module):
             nn.ReLU(inplace=True),
         )
 
-    def forward(self, x):
+    def forward(self, x): 
         return self.conv_op(x)
     
 class Downsample(nn.Module):
