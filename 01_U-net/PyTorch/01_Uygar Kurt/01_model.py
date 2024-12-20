@@ -9,7 +9,7 @@ import torch.nn as nn
 
 device = 'cuda' if t.cuda.is_available() else 'cpu'
 # %%
-class DoubleConv:
+class DoubleConv(nn.Module):
     def __init__(self, in_channel, out_channels):
         super().__init__()
         self.conv_op = nn.Sequential(
@@ -22,7 +22,7 @@ class DoubleConv:
     def forward(self, x):
         return self.conv_op(x)
     
-class Downsample:
+class Downsample(nn.Module):
     def __init__(self, in_channel, out_channel):
         super().__init__()
         self.conv = DoubleConv(in_channel, out_channel)
@@ -33,7 +33,7 @@ class Downsample:
         pool = self.pool(conv)
         return conv, pool
     
-class UpSample:
+class UpSample(nn.Module):
     def __init__(self, in_channel, out_channel):
         super().__init__()
         self.up = nn.ConvTranspose2d(in_channel, in_channel//2, kernel_size=(2,2), stride=2)
