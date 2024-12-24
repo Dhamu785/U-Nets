@@ -36,3 +36,11 @@ class unet(nn.Module):
         out = self.out(up4)
 
         return out
+    
+if __name__ == "__main__":
+    input_img = t.randn((1, 3, 512, 512))
+    print(f"Input image shape = {input_img.shape}")
+
+    unet = unet(in_channel=3, num_classes=1)
+    res = unet(input_img)
+    print(f"Output shape from unet model = {res.shape}")
