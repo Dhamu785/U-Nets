@@ -34,3 +34,5 @@ class unet(nn.Module):
         up4 = self.up_conv4(up3, conv1)
 
         out = self.out(up4)
+
+        return out
