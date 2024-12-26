@@ -19,3 +19,9 @@ if __name__ == "__main__":
 
     train_dataset, val_dataset = random_split(dataset=data, lengths=(0.8, 0.2), generator=generator)
     
+    train_dataloader = DataLoader(train_dataset, BATCH_SIZE, True)
+    val_dataloader = DataLoader(val_dataset, BATCH_SIZE, True)
+
+    model = unet(in_channel=3, num_classes=1).to(DEVICE)
+    optimizer = optim.Adam(params = model.parameters(), lr=LEARNING_RATE)
+    loss = nn.BCEWithLogitsLoss()
