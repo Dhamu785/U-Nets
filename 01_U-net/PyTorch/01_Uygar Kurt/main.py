@@ -76,4 +76,4 @@ if __name__ == "__main__":
             test_loss_per_batch /= idx+1
             test_acc_per_batch /= idx+1
 
-        print(f"{epoch/EPOCHS} | train_loss = {train_loss_per_batch:.4f} | train_acc = {train_acc_per_batch:.4f} | test_loss = {test_loss_per_batch:.4f} | test_acc = {test_acc_per_batch:.4f}")
+        print(f"{epoch} / {EPOCHS} | train_loss = {train_loss_per_batch:.4f} | train_acc = {train_acc_per_batch:.4f} | test_loss = {test_loss_per_batch:.4f} | test_acc = {test_acc_per_batch:.4f}")
