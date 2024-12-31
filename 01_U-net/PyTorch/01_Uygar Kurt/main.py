@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
                 y_pred_test = model(img)
                 test_ls = loss(y_pred_test, mask)
-                test_acc = accuracy(y_pred, mask)
+                test_acc = accuracy(y_pred_test, mask)
 
                 test_loss_per_batch += test_ls
                 test_acc_per_batch += test_acc
