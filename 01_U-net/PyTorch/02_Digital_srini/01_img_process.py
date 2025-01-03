@@ -5,9 +5,10 @@ from PIL import Image
 from skimage import measure, color, io
 import matplotlib.pyplot as plt
 import cv2
+import pandas as pd
 
 # %% read image
-img_data = cv2.imread(r'C:\Users\dhamu\Documents\Python all\torch_works\01\U-Nets\01_U-net\PyTorch\02_Digital_srini\data\seg_img.png')
+img_data = cv2.imread(r'/Users/dhamodharan/My-Python/AI-Tutorials/U-Nets/01_U-net/PyTorch/02_Digital_srini/data/seg_img.png')
 img_gray = img_data[:,:,0]
 plt.imshow(img_gray, cmap='gray')
 plt.show()
@@ -77,3 +78,10 @@ plt.imshow(img_data)
 plt.axis('off')
 plt.show()
 # %%
+
+props = measure.regionprops_table(markers, img_gray, 
+                            properties=['label', 'area', 'mean_intensity', 
+                            'solidity', 'equivalent_diameter'])
+
+df = pd.DataFrame(props)
+df.head()
