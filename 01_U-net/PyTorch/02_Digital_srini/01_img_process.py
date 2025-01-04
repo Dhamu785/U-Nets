@@ -1,4 +1,5 @@
 # %% import libs
+# https://youtu.be/lOZDTDOlqfk?si=4qumQIubzNk-0lSg - instance segmentation
 import os
 import numpy as np
 from PIL import Image
@@ -85,3 +86,5 @@ props = measure.regionprops_table(markers, img_gray,
 
 df = pd.DataFrame(props)
 df.head()
+
+# https://youtu.be/LM9yisNYfyw?si=yfS69X_scKEQBvDb patch images
