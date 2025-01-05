@@ -88,3 +88,25 @@ df = pd.DataFrame(props)
 df.head()
 
 # https://youtu.be/LM9yisNYfyw?si=yfS69X_scKEQBvDb patch images
+
+# %% image patchify
+from patchify import patchify, unpatchify
+import cv2
+import matplotlib.pyplot as plt
+# %%
+img_data = cv2.imread(r'/Users/dhamodharan/My-Python/AI-Tutorials/U-Nets/01_U-net/PyTorch/02_Digital_srini/data/seg_img.png')
+print(img_data.shape)
+img_resized = cv2.resize(img_data, (512, 512))
+print(img_resized.shape)
+# %%
+img_patchs = patchify(img_resized, (64, 64, 3), 64)
+print(img_patchs.shape)
+
+#%%
+plt.imshow(img_patchs[0,0,0])
+plt.axis('off')
+plt.show()
+# %%
+unpatch = unpatchify(img_patchs, (512, 512,3))
+print(unpatch.shape)
+# %%
