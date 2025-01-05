@@ -1,3 +1,4 @@
+# https://youtu.be/HS3Q_90hnDg?si=NmitL-5xzu2EiGwn
 import torch as t
 from tqdm import tqdm
 from torch.utils.data import DataLoader, random_split
