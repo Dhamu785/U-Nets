@@ -32,3 +32,12 @@ def iou(img1:np.array, img2:np.array) -> float:
     return jaccard
 # %% print IoU value
 print(iou(img1, img2))
+
+# %% calculate the loss
+def cal_loss(img1:np.array, img2:np.array) -> float:
+    IoU = iou(img1, img2)
+    loss = 1 - IoU
+    return loss
+# %%
+loss = cal_loss(img1, img2)
+print("Loss = ", loss)
