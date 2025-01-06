@@ -28,7 +28,7 @@ def iou(img1:np.array, img2:np.array) -> float:
     d1 = np.ravel(img1)
     d2 = np.ravel(img2)
     intersection = np.sum(d1 * d2)
-    jaccard = intersection / (np.sum(d1) + np.sum(d2) - intersection)
+    jaccard = intersection / np.sum(d1) + np.sum(d2)
     return jaccard
 # %% print IoU value
 print(iou(img1, img2))
