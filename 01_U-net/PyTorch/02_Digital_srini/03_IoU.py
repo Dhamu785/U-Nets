@@ -1,7 +1,7 @@
 # %% import libs 
 import numpy as np
-import os
 import matplotlib.pyplot as plt
+import torch as t
 
 #%% create img''s
 img1 = np.random.randn(64,64)
@@ -41,3 +41,13 @@ def cal_loss(img1:np.array, img2:np.array) -> float:
 # %%
 loss = cal_loss(img1, img2)
 print("Loss = ", loss)
+# %% Generate images with batch size
+img_b1 = np.random.randn(16, 64, 64)
+img_b2 = np.random.randn(16, 64, 64)
+print(img_b1.shape, img_b2.shape)
+# %% convert numpy array to torch tensor
+torch_b1 = t.from_numpy(img_b1)
+torch_b2 = t.from_numpy(img_b2)
+print(f"Tensor by torch info : {torch_b1.shape, torch_b2.shape}")
+# %% sum only the image from batchs 
+print(torch_b1.sum((2,1))) # or print(torch_b1.sum((1,2))) # both r same
