@@ -53,6 +53,17 @@ print(pred_ch_order_clone.shape)
 plt.imshow(pred_ch_order_clone.to('cpu'), cmap='gray')
 plt.axis('off')
 plt.show()
+# %% view model
+print(model)
+# %% vis model summary
+## Type-1
+from torchinfo import summary
 # %%
+model = unet(in_channel=3, num_classes=1).to(DEVICE)
+model.load_state_dict(t.load(r"C:\Users\dhamu\Documents\Python all\torch_works\01\model\u-net\v0\seg-model.pt", map_location=t.device(DEVICE), weights_only=True))
 
+summary(model.to('cpu'), input_size=(1, 3, 512, 512))
+# %% Type-2
+from torchsummary import summary
 # %%
+summary(model, input_size=(3, 512, 512))
