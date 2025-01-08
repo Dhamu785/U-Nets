@@ -30,7 +30,11 @@ transform_img = transforms.Compose([
             transforms.Resize((512,512)),
             transforms.ToTensor()
         ])
+# Original car image
 img = Image.open(r"C:\Users\dhamu\Documents\Python all\torch_works\01\dataset\X\0cdf5b5d0ce1_13.jpg")
+
+# image mask
+# img = Image.open(r"C:\Users\dhamu\Documents\Python all\torch_works\01\dataset\Y\0cdf5b5d0ce1_01_mask.gif").convert('L')
 transformed_img = transform_img(img)
 transformed_img1 = transformed_img.unsqueeze(0)
 channel_rearranged = transformed_img.permute(1, 2, 0)
