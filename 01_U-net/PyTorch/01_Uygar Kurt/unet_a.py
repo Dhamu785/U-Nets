@@ -19,7 +19,7 @@ class unet(nn.Module):
         self.up_conv4 = UpSample(in_channel=128, out_channel=64)
 
         self.out = nn.Conv2d(in_channels=64, out_channels=num_classes, kernel_size=(1,1))
-        # self.act = nn.Sigmoid()
+        self.act = nn.Sigmoid()
 
     def forward(self, x):
         conv1, p1 = self.down_conv1(x)
@@ -35,9 +35,9 @@ class unet(nn.Module):
         up4 = self.up_conv4(up3, conv1)
 
         out = self.out(up4)
-        # act_out = self.act(out)
+        act_out = self.act(out)
 
-        return out
+        return act_out
     
 if __name__ == "__main__":
     input_img = t.randn((1, 3, 512, 512))
