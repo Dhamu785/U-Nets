@@ -41,7 +41,7 @@ def cal_loss(img1:np.array, img2:np.array) -> float:
 # %%
 loss = cal_loss(img1, img2)
 print("Loss = ", loss)
-# ------------------------------------------
+# ------------------------------------------------------------------------------------
 # %% Generate images with batch size
 img_b1 = np.random.randn(16, 64, 64)
 img_b2 = np.random.randn(16, 64, 64)
@@ -54,7 +54,7 @@ print(f"Tensor by torch info : {torch_b1.shape, torch_b2.shape}")
 print(torch_b1.sum((2,1))) # or print(torch_b1.sum((1,2))) # both r same
 
 # %% 
-# ------------------------------------------
+# ------------------------------------------------------------------------------------
 # From kaggle (https://www.kaggle.com/code/iezepov/fast-iou-scoring-metric-in-pytorch-and-numpy)
 SMOOTH = 1e-6
 
