@@ -1,4 +1,5 @@
 # %% import libs 
+# https://youtu.be/BNPW1mYbgS4?si=xjmlOIrjgNDb0xfw
 import numpy as np
 import matplotlib.pyplot as plt
 import torch as t
