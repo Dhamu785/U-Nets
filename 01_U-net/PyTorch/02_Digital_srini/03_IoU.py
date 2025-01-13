@@ -73,3 +73,24 @@ def iou_pytorch(outputs: t.Tensor, labels: t.Tensor):
     thresholded = t.clamp(20 * (iou - 0.5), 0, 10).ceil() / 10  # This is equal to comparing with thresolds
     
     return thresholded  # Or thresholded.mean() if you are interested in average across the batch
+
+# ------------------------------------------------------------------------------------
+# %% My IoU
+def loss_iou(y_pred, y_true, inf):
+    if not inf:
+        if not y_pred.requires_grad:
+            raise ValueError("y_pred should have gradient tracking")
+    
+    device = y_pred.device
+    # binary_pred = t.where(y_pred <= 0, t.zeros_like(y_pred, device=device, requires_grad=True), t.ones_like(y_pred, device=device, requires_grad=True))
+    y_true = t.where(y_true <= 0, t.zeros_like(y_pred, device=device), t.ones_like(y_pred, device=device))
+    
+    # y_pred = F.sigmoid(y_pred)
+    
+    intersection = t.abs((y_pred.view((-1)) * y_true.view((-1))).sum().float())
+    union = t.abs((y_pred.sum() + y_true.sum()).float())
+    # print(f"intersection = {t.abs(intersection)}, union={union}")
+
+    iou = (t.abs(intersection) + 1e-5) / ((union + 1e-5) - t.abs(intersection))
+    iou_loss = 1 - iou
+    return iou_loss
