@@ -4,7 +4,7 @@ from skimage import color, measure
 import matplotlib.pyplot as plt
 import cv2
 # %% reading and ploting the images
-img_data = cv2.imread(r'C:\Users\dhamu\Documents\Python all\torch_works\01\U-Nets\01_U-net\PyTorch\02_Digital_srini\data\30450.png')
+img_data = cv2.imread(r"C:\Users\dhamu\Documents\Python all\alfa-TKG\AI Team\CBIR\Improvement works\Image enhancement\Data before training-20250124T051836Z-001\Data before training\Reviewed\Blured\Blr_range\18622565.jpeg")
 gray_img = img_data[:,:,0]
 
 plt.subplot(1, 2, 1)
@@ -76,3 +76,12 @@ img2 = color.label2rgb(markers, bg_label=10, bg_color=(0, 0, 0))
 plt.imshow(img2)
 plt.axis('off')
 plt.show()
+# %%
+plt.subplot(1,2,1)
+plt.imshow(gray_img, cmap='gray')
+plt.axis('off')
+plt.subplot(1,2,2)
+plt.imshow(img2)
+plt.axis('off')
+plt.show()
+# %%
