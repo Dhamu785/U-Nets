@@ -44,3 +44,25 @@ def train_fn(loader, model, optimizer, loss_fn, scalar):
         scalar.update()
 
         loop.set_postfix(loss=loss.item())
+
+# %% main function
+def main():
+    train_transform = A.Compose([
+        A.Resize(height = IMAGE_HEIGHT, width = IMAGE_WIDTH),
+        A.Rotate(limit=35, p=1.0),
+        A.HorizontalFlip(p=0.5),
+        A.VerticalFlip(p=0.1),
+        A.Normalize(mean=[0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0], max_pixel_value=255.0),
+        ToTensorV2()
+    ])
+
+    val_transform = A.Compose([
+        A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
+        A.Normalize(mean=[0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0], max_pixel_value=255.0),
+        ToTensorV2()
+    ])
+
+    model = UNET(in_channel=3, out_channel=1).to(device=DEVICE)
+    loss_fn = nn.BCEWithLogitsLoss()
+    optimizer = optim.Adam(params=model.parameters(), lr=LEARNING_RATE)
+    
