@@ -22,3 +22,23 @@ def get_loaders(traindir, trainmskdir, testdir, testmskdir, batch_size, train_tr
 
     return train_loader, test_loader
 # %%
+def calc_accuracy(model, loader, device:str | str='cuda'):
+    num_correct = 0
+    num_pixels = 0
+    dice_score = 0
+
+    model.eval()
+    with t.inference_mode():
+        for x, y in loader:
+            x = x.to(device)
+            y = y.to(device).unsqeeze(1).to(dtype=t.float16)
+
+            preds = t.sigmoid(model(x))
+            preds = (preds > 0.5).float()
+            num_correct += (preds == y).sum()
+            num_pixels += t.numel(preds)
+            dice_score += ( 2 * (preds * y).sum() / (preds + y).sum() + 1e-8)
+
+    print(f"Got {num_correct}/{num_pixels} with acc of {num_correct/num_pixels*100:.2f}")
+    print(f"Dice score = {dice_score / len(loader):.2f}")
+    model.train()
