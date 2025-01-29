@@ -16,7 +16,7 @@ NUM_EPOCHS = 20
 NUM_WORKERS = 2
 IMAGE_HEIGHT = 160
 IMAGE_WIDTH = 240
-PIM_MEMORY = True
+PIN_MEMORY = True
 LOAD_MODEL = False
 TRAIN_IMG_DIR = ''
 TRAIN_MSK_DIR = ''
@@ -67,4 +67,25 @@ def main():
     loss_fn = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(params=model.parameters(), lr=LEARNING_RATE)
     
-    train_loader, val_loader = get_loaders(TRAIN_IMG_DIR)
+    train_loader, val_loader = get_loaders(TRAIN_IMG_DIR, TRAIN_MSK_DIR, TEST_IMG_DIR, TEST_MSK_DIR,
+                                            BATCH_SIZE, train_transform, val_transform, NUM_WORKERS, PIN_MEMORY)
+    
+    if LOAD_MODEL:
+        load_checkpoint(model, "checkpoint.ckpt")
+
+    calc_accuracy(model, val_loader, DEVICE)
+
+    scaler = t.GradScaler(DEVICE)
+
+    for epoch in range(NUM_EPOCHS):
+        train_fn(train_loader, model, optimizer, loss_fn, scaler)
+
+        check_point = {"state_dict": model.state_dict(), optimizer:optimizer.state_dict()}
+        save_checkpoint(check_point)
+
+        calc_accuracy(model, val_loader, DEVICE)
+
+        save_predictions(model, "path", val_loader, DEVICE)
+
+if __name__ == "__main__":
+    main()
