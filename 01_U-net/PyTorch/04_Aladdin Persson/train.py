@@ -6,6 +6,7 @@ from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim
 from model import UNET
+from utils import save_checkpoint, load_checkpoint, get_loaders, calc_accuracy, save_predictions
 
 # %% Hyperparameter
 LEARNING_RATE = 1e-4
@@ -66,3 +67,4 @@ def main():
     loss_fn = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(params=model.parameters(), lr=LEARNING_RATE)
     
+    train_loader, val_loader = get_loaders(TRAIN_IMG_DIR)
