@@ -77,6 +77,14 @@ def test():
     print(f"Prediction shape = {pred.shape}, Sample shape = {sample.shape}")
     assert pred.shape == sample.shape
 
+# %% checkpoint test
+def checkpoint():
+    model = UNET(in_channel=3, out_channel=1)
+    model_stat = model.state_dict()
+    save_params = {'epochs':20, 'model_state': model_stat}
+    t.save(save_params, "files.ckpt")
 # %% sample run
 if __name__ == "__main__":
-    test()
+    # test()
+    checkpoint()
+
