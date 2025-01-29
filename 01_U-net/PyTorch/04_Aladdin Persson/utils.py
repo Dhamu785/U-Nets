@@ -42,3 +42,17 @@ def calc_accuracy(model, loader, device:str | str='cuda'):
     print(f"Got {num_correct}/{num_pixels} with acc of {num_correct/num_pixels*100:.2f}")
     print(f"Dice score = {dice_score / len(loader):.2f}")
     model.train()
+
+# %%
+def save_predictions(model, folder_path, loader, device):
+    model.eval()
+    for idx, (x,y) in enumerate(loader):
+        x = x.to(device)
+
+        with t.inference_mode():
+            preds = t.sigmoid(model(x))
+            preds_bin = (preds > 0.5).float()
+
+        torchvision.utils.save_image(preds_bin, f"{folder_path}/prediction_{idx}.png")
+        torchvision.utils.save_image(y.unsqeeze(1), f"{folder_path}/labels_{idx}.png")
+        model.train()
