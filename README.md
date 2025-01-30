@@ -26,6 +26,7 @@
 - torchvision.utils.save_image
 - BatchNorm2d in unet
 - pinmemory, num_workers
-- t.numel
+- t.numel, t.permutr | np.ravel
+- tqdm.set_postfix
 ---
 ### Tensorflow
