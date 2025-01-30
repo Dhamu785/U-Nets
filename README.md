@@ -17,7 +17,7 @@
 #### 03_tools
 - torchvision.utils.make_grid
 - torchvision.utils.draw_segmentation_mask
-
+---
 #### [04_Aladdin Persson](https://www.youtube.com/watch?v=IHq1t7NxS8k&t=278s)
 - albumentations
 - checkpoint
@@ -27,5 +27,5 @@
 - BatchNorm2d in unet
 - pinmemory, num_workers
 - t.numel
-
+---
 ### Tensorflow
