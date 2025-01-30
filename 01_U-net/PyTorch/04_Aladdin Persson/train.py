@@ -11,17 +11,18 @@ from utils import save_checkpoint, load_checkpoint, get_loaders, calc_accuracy, 
 # %% Hyperparameter
 LEARNING_RATE = 1e-4
 DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
-BATCH_SIZE = 16
-NUM_EPOCHS = 20
-NUM_WORKERS = 2
-IMAGE_HEIGHT = 160
-IMAGE_WIDTH = 240
+print(DEVICE)
+BATCH_SIZE = 2
+NUM_EPOCHS = 2
+NUM_WORKERS = 0
+IMAGE_HEIGHT = 512
+IMAGE_WIDTH = 512
 PIN_MEMORY = True
-LOAD_MODEL = False
-TRAIN_IMG_DIR = ''
-TRAIN_MSK_DIR = ''
-TEST_IMG_DIR = ''
-TEST_MSK_DIR = ''
+LOAD_MODEL = True
+TRAIN_IMG_DIR = 'C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\train_x'
+TRAIN_MSK_DIR = 'C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\train_y'
+TEST_IMG_DIR = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\test_x"
+TEST_MSK_DIR = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\test_y"
 
 # %% train
 def train_fn(loader, model, optimizer, loss_fn, scalar):
@@ -85,7 +86,7 @@ def main():
 
         calc_accuracy(model, val_loader, DEVICE)
 
-        save_predictions(model, "path", val_loader, DEVICE)
+        save_predictions(model, "image_saved_per_epoch", val_loader, DEVICE, epoch)
 
 if __name__ == "__main__":
     main()

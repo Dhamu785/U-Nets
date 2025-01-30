@@ -6,12 +6,13 @@ from dataset import carvana
 
 # %%
 def save_checkpoint(state, filename="checkpoint.ckpt"):
-    print("==> Saving the checking")
+    print("==> Saving the checkpoint")
     t.save(state, filename)
 
 def load_checkpoint(model, checkpoint):
     print("==> Loading the model")
-    model.load_statedict(checkpoint['state_dict'])
+    ckpt = t.load(checkpoint, weights_only=False)
+    model.load_state_dict(ckpt['state_dict'])
 
 def get_loaders(traindir, trainmskdir, testdir, testmskdir, batch_size, train_transforms,
                 val_transforms, num_workers=0, pin_memory=True):
@@ -31,7 +32,7 @@ def calc_accuracy(model, loader, device:str | str='cuda'):
     with t.inference_mode():
         for x, y in loader:
             x = x.to(device)
-            y = y.to(device).unsqeeze(1).to(dtype=t.float16)
+            y = y.to(device).unsqueeze(1).to(dtype=t.float16)
 
             preds = t.sigmoid(model(x))
             preds = (preds > 0.5).float()
@@ -44,7 +45,7 @@ def calc_accuracy(model, loader, device:str | str='cuda'):
     model.train()
 
 # %%
-def save_predictions(model, folder_path, loader, device):
+def save_predictions(model, folder_path, loader, device, epoch):
     model.eval()
     for idx, (x,y) in enumerate(loader):
         x = x.to(device)
@@ -53,6 +54,6 @@ def save_predictions(model, folder_path, loader, device):
             preds = t.sigmoid(model(x))
             preds_bin = (preds > 0.5).float()
 
-        torchvision.utils.save_image(preds_bin, f"{folder_path}/prediction_{idx}.png")
-        torchvision.utils.save_image(y.unsqeeze(1), f"{folder_path}/labels_{idx}.png")
+        torchvision.utils.save_image(preds_bin, f"{folder_path}/epoch-{epoch}_predictioni{idx}.png")
+        torchvision.utils.save_image(y.unsqueeze(1), f"{folder_path}/epoch-{epoch}_labels-{idx}.png")
         model.train()
