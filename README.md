@@ -21,6 +21,7 @@
 3. [IOU](https://youtu.be/BNPW1mYbgS4?si=xjmlOIrjgNDb0xfw)
 
     - formula
+    - Dice coefficient(Mostly used in medical images)
 
 ---
 
