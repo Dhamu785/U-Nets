@@ -10,7 +10,7 @@ from PIL import Image
 
 # Path for mac
 target_path_msk = '/Users/dhamodharan/My-Python/AI-Tutorials/01_Dataset from online/sandstone_data_for_ML/01_Segmentation/02_Instance segmentation/data_for_3D_Unet/target_masks/'
-tiff_msk = '/Users/dhamodharan/My-Python/AI-Tutorials/01_Dataset from online/sandstone_data_for_ML/01_Segmentation/02_Instance segmentation/data_for_3D_Unet/train_masks_256_256_256.tif'
+tiff_msk = '/Users/dhamodharan/My-Python/AI-Tutorials/01_Dataset from online/sandstone_data_for_ML/01_Segmentation/02_Instance segmentation/data_for_3D_Unet/train_images_256_256_256.tif'
 
 # %%
 tiff_img = Image.open(tiff_msk)
