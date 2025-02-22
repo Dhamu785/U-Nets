@@ -13,7 +13,7 @@ class DataSet(Dataset):
         self.masks = os.listdir(self.path_mask)
         if cstm_transform == None:
             self.transform = transforms.Compose([
-                transforms.Resize((512, 512)),
+                transforms.Resize((256, 256)),
                 transforms.ToTensor()
             ])
         else:
