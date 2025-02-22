@@ -4,7 +4,7 @@
 
 ### PyTorch
 
-#### [01_Uygar Kurt](https://youtu.be/HS3Q_90hnDg?si=NmitL-5xzu2EiGwn)
+#### 01_Uygar Kurt [YT](https://youtu.be/HS3Q_90hnDg?si=NmitL-5xzu2EiGwn), [GitHub](https://github.com/uygarkurt/UNet-PyTorch) 
 
 - torch.utils.data.random_split
 
@@ -32,7 +32,7 @@
 
 ---
 
-#### [04_Aladdin Persson](https://www.youtube.com/watch?v=IHq1t7NxS8k&t=278s)
+#### 04_Aladdin Persson [YT](https://www.youtube.com/watch?v=IHq1t7NxS8k&t=278s), [GitHub](https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/image_segmentation/semantic_segmentation_unet/train.py)
 
 - albumentations
 - checkpoint
