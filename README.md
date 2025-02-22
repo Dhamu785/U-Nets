@@ -4,7 +4,7 @@
 
 ### PyTorch
 
-#### 01_Uygar Kurt [YT](https://youtu.be/HS3Q_90hnDg?si=NmitL-5xzu2EiGwn), [GitHub](https://github.com/uygarkurt/UNet-PyTorch) 
+#### 01_Uygar Kurt [YT](https://youtu.be/HS3Q_90hnDg?si=NmitL-5xzu2EiGwn), [GitHub](https://github.com/uygarkurt/UNet-PyTorch)
 
 - torch.utils.data.random_split
 
