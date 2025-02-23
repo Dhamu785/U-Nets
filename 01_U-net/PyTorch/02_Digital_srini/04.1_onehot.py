@@ -31,8 +31,9 @@ print(onehot.reshape(2,3, -1))
 print(onehot.reshape(2,3, -1).shape)
 # %%
 print(onehot.reshape(-1,2,3))
-
-np.transpose(onehot.reshape(2,3,-1), (2,0,1))
+transposed = np.transpose(onehot.reshape(2,3,-1), (2,0,1))
+print(transposed)
+transposed[:, 1, 2]
 # %%
 np.transpose(onehot.reshape(2,3,-1), (2,0,1)).shape
 # %%
