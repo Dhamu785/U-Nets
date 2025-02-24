@@ -27,12 +27,13 @@ class DataSet(Dataset):
     def __getitem__(self, index):
         s_img = Image.open(os.path.join(self.path_train, self.images[index])).convert('RGB')
         s_msk = Image.open(os.path.join(self.path_mask, self.masks[index]))
-        numpy_img = np.array(s_msk)
-        h,w = numpy_img.shape
-        s_mask_reshaped = numpy_img.reshape((-1))
-        onehot_msk = t.nn.functional.one_hot(t.tensor(s_mask_reshaped, dtype=t.long), 4)
-        original_shape = onehot_msk.reshape(h, w, -1)
-        return self.transform(s_img), np.transpose(original_shape, (2, 0, 1))
+        # numpy_img = np.array(s_msk)
+        # h,w = numpy_img.shape
+        # s_mask_reshaped = numpy_img.reshape((-1))
+        # onehot_msk = t.nn.functional.one_hot(t.tensor(s_mask_reshaped, dtype=t.long), 4)
+        # original_shape = onehot_msk.reshape(h, w, -1)
+        # return self.transform(s_img), np.transpose(original_shape, (2, 0, 1))
+        return self.transform(s_img), self.transform(s_msk)
 
 
 if __name__ == "__main__":
