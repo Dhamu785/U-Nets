@@ -3,7 +3,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 import numpy as np
 
-class carvana(Dataset):
+class Dataset(Dataset):
     def __init__(self, image_path:str, mask_path:str, transform=None):
         self.img_path = image_path
         self.msk_path = mask_path
