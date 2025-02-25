@@ -62,7 +62,30 @@ print(f"Result of argmax = {argmax_res}")
 # %%
 from utils import get_loaders
 from train import main
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
+import numpy as np
+
 # %%
-import dataset
+trainimg = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\02_instance segmentation\\images"
+trainmsk = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\02_instance segmentation\\masks"
+testnimg = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\02_instance segmentation\\images"
+testnmsk = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\02_instance segmentation\\masks"
+train_transform = A.Compose([
+        A.Resize(height = 256, width = 256),
+        A.Normalize(mean=[0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0], max_pixel_value=255.0),
+        ToTensorV2()
+    ])
+
+val_transform = A.Compose([
+    A.Resize(height=256, width=256),
+    ToTensorV2()
+])
+train, test = get_loaders(trainimg, trainmsk, trainimg, trainmsk, 8, train_transform, val_transform, 0, False)
+
+# %%
+i,j = next(iter(train))
+print(f"unique of y = {np.unique(j)}")
+print(f"X: Min = {i.min()}, Max = {i.max()}")
 
 # %%

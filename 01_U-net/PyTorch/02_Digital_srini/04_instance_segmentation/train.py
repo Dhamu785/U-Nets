@@ -19,10 +19,10 @@ IMAGE_HEIGHT = 256
 IMAGE_WIDTH = 256
 PIN_MEMORY = True
 LOAD_MODEL = False
-TRAIN_IMG_DIR = 'C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\train_x'
-TRAIN_MSK_DIR = 'C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\train_y'
-TEST_IMG_DIR = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\test_x"
-TEST_MSK_DIR = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\test_y"
+TRAIN_IMG_DIR = ''
+TRAIN_MSK_DIR = ''
+TEST_IMG_DIR = ""
+TEST_MSK_DIR = ""
 CLASS_WEIGHT = []
 
 # %% train
@@ -61,7 +61,6 @@ def main():
 
     val_transform = A.Compose([
         A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
-        A.Normalize(mean=[0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0], max_pixel_value=255.0),
         ToTensorV2()
     ])
 
@@ -76,7 +75,7 @@ def main():
     if LOAD_MODEL:
         load_checkpoint(model, "checkpoint.ckpt")
 
-    calc_accuracy(model, val_loader, DEVICE)
+    calc_accuracy(model, val_loader, 4, DEVICE)
 
     scaler = t.GradScaler(DEVICE)
 
@@ -86,7 +85,7 @@ def main():
         check_point = {"state_dict": model.state_dict(), optimizer:optimizer.state_dict()}
         save_checkpoint(check_point)
 
-        calc_accuracy(model, val_loader, DEVICE)
+        calc_accuracy(model, val_loader, 4, DEVICE)
 
         save_predictions(model, "image_saved_per_epoch", val_loader, DEVICE, epoch)
 

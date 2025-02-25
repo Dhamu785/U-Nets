@@ -24,15 +24,15 @@ def get_loaders(traindir, trainmskdir, testdir, testmskdir, batch_size, train_tr
     return train_loader, test_loader
 # %%
 def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
-    num_correct : list[int,] = t.zeros(classes, dtype=t.float)
-    num_pixels:list[int,] = t.zeros(classes, dtype=t.float)
-    dice_score = t.zeros(classes, dtype=t.float)
+    num_correct : list[int,] = t.zeros((classes), dtype=t.float)
+    num_pixels:list[int,] = t.zeros((classes), dtype=t.float)
+    dice_score = t.zeros((classes), dtype=t.float)
 
     model.eval()
     with t.inference_mode():
         for x, y in loader:
             x = x.to(device)
-            y = y.to(device).unsqueeze(1).to(dtype=t.float16)
+            y = y.to(device).unsqueeze(1).to(dtype=t.int)
             preds = t.argmax(model(x), 1)
             for clss in range(classes):
                 p = (preds == clss).int()
@@ -52,9 +52,8 @@ def save_predictions(model, folder_path, loader, device, epoch):
         x = x.to(device)
 
         with t.inference_mode():
-            preds = t.sigmoid(model(x))
-            preds_bin = (preds > 0.5).float()
+            preds = t.argmax(model(x),1)
 
-        torchvision.utils.save_image(preds_bin, f"{folder_path}/epoch-{epoch}_predictioni{idx}.png")
+        torchvision.utils.save_image(preds, f"{folder_path}/epoch-{epoch}_predictioni{idx}.png")
         torchvision.utils.save_image(y.unsqueeze(1), f"{folder_path}/epoch-{epoch}_labels-{idx}.png")
         model.train()
