@@ -22,7 +22,7 @@ def get_loaders(traindir, trainmskdir, testdir, testmskdir, batch_size, train_tr
     return train_loader, test_loader
 
 def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
-    num_correct = t.zeros((classes))
+    num_correct = t.zeros((classes), dtype=t.float)
     num_pixels = t.zeros((classes), dtype=t.float)
     dice_score = t.zeros((classes), dtype=t.float)
 
@@ -34,9 +34,9 @@ def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
             preds = t.argmax(model(x), 1)
             for clss in range(classes):
                 p = (preds == clss).int()
-                t = (y == clss).int()
-                num_correct[clss] += (p == t).sum()
-                dice_score[clss] += (2 * (p * y).sum() / (p + t).sum() + 1e-8)
+                true = (y == clss).int()
+                num_correct[clss] += (p == true).sum()
+                dice_score[clss] += (2 * (p * true).sum() / (p + true).sum() + 1e-8)
                 num_pixels[clss] += t.sum()
 
         for score in range(len(dice_score)):
