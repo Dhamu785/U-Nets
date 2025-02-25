@@ -46,3 +46,23 @@ s1 = np.array([1,1,1,1,1,1,2,2,2,3])
 print(f"Sample1 = {s1}")
 cls_wgt = class_weight.compute_class_weight(class_weight='balanced', classes=np.unique(s1), y=s1)
 print(cls_wgt)
+# =======================================================================================
+
+# %% Calculate argmax for b, c, h, w
+import torch as t
+# %%
+s1 = t.randn((1,4,4,4))
+print("s1 shape = ", s1.shape)
+print("Datapoints = ", s1)
+argmax_res = t.argmax(s1, 1)
+print(f"Shape of the argmax = {argmax_res.shape}")
+print(f"Result of argmax = {argmax_res}")
+# =======================================================================================
+
+# %%
+from utils import get_loaders
+from train import main
+# %%
+import dataset
+
+# %%

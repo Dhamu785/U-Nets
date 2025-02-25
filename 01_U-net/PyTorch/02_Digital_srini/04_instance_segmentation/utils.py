@@ -23,25 +23,26 @@ def get_loaders(traindir, trainmskdir, testdir, testmskdir, batch_size, train_tr
 
     return train_loader, test_loader
 # %%
-def calc_accuracy(model, loader, device:str | str='cuda'):
-    num_correct = 0
-    num_pixels = 0
-    dice_score = 0
+def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
+    num_correct : list[int,] = t.zeros(classes, dtype=t.float)
+    num_pixels:list[int,] = t.zeros(classes, dtype=t.float)
+    dice_score = t.zeros(classes, dtype=t.float)
 
     model.eval()
     with t.inference_mode():
         for x, y in loader:
             x = x.to(device)
             y = y.to(device).unsqueeze(1).to(dtype=t.float16)
+            preds = t.argmax(model(x), 1)
+            for clss in range(classes):
+                p = (preds == clss).int()
+                t = (y == clss).int()
+                num_correct[clss] += (p == t).sum()
+                dice_score[clss] += (2 * (p * y).sum() / (p + t).sum() + 1e-8)
+                num_pixels[clss] += t.sum()
 
-            preds = t.sigmoid(model(x))
-            preds = (preds > 0.5).float()
-            num_correct += (preds == y).sum()
-            num_pixels += t.numel(preds)
-            dice_score += ( 2 * (preds * y).sum() / (preds + y).sum() + 1e-8)
-
-    print(f"Got {num_correct}/{num_pixels} with acc of {num_correct/num_pixels*100:.2f}")
-    print(f"Dice score = {dice_score / len(loader):.2f}")
+        for score in range(len(dice_score)):
+            print(f"Dice score for class_{score} = {dice_score[score] / len(loader):.2f}")
     model.train()
 
 # %%

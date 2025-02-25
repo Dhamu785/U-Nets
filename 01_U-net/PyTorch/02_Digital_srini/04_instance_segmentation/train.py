@@ -11,18 +11,19 @@ from utils import save_checkpoint, load_checkpoint, get_loaders, calc_accuracy, 
 # %% Hyperparameter
 LEARNING_RATE = 1e-4
 DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
-print(DEVICE)
-BATCH_SIZE = 2
-NUM_EPOCHS = 2
+print(f"Available device = {DEVICE}")
+BATCH_SIZE = 8
+NUM_EPOCHS = 10
 NUM_WORKERS = 0
-IMAGE_HEIGHT = 512
-IMAGE_WIDTH = 512
+IMAGE_HEIGHT = 256
+IMAGE_WIDTH = 256
 PIN_MEMORY = True
-LOAD_MODEL = True
+LOAD_MODEL = False
 TRAIN_IMG_DIR = 'C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\train_x'
 TRAIN_MSK_DIR = 'C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\train_y'
 TEST_IMG_DIR = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\test_x"
 TEST_MSK_DIR = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\dataset\\test_y"
+CLASS_WEIGHT = []
 
 # %% train
 def train_fn(loader, model, optimizer, loss_fn, scalar):
@@ -66,7 +67,7 @@ def main():
 
     model = UNET(in_channel=3, out_channel=1).to(device=DEVICE)
     # loss_fn = nn.BCEWithLogitsLoss()
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.CrossEntropyLoss(weight=CLASS_WEIGHT)
     optimizer = optim.Adam(params=model.parameters(), lr=LEARNING_RATE)
     
     train_loader, val_loader = get_loaders(TRAIN_IMG_DIR, TRAIN_MSK_DIR, TEST_IMG_DIR, TEST_MSK_DIR,
