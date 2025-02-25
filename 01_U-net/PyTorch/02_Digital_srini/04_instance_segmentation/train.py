@@ -31,12 +31,12 @@ def train_fn(loader, model, optimizer, loss_fn, scalar):
 
     for batch_idx, (images, targets) in enumerate(loop):
         images = images.to(device=DEVICE)
-        targets = targets.unsqueeze(1).float().to(device=DEVICE)
+        targets = targets.to(device=DEVICE, dtype=t.int64)
 
         # forward pass & loss calculations
         with t.autocast(device_type=DEVICE):
             predictions = model(images)
-            loss = loss_fn(predictions, targets)
+            loss = loss_fn(predictions.to(t.float32), targets)
 
         # zero-grad and backward pass
         optimizer.zero_grad()
@@ -61,10 +61,11 @@ def main():
 
     val_transform = A.Compose([
         A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
+        A.Normalize(mean=[0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0], max_pixel_value=255.0),
         ToTensorV2()
     ])
 
-    model = UNET(in_channel=3, out_channel=1).to(device=DEVICE)
+    model = UNET(in_channel=3, out_channel=4).to(device=DEVICE)
     # loss_fn = nn.BCEWithLogitsLoss()
     loss_fn = nn.CrossEntropyLoss(weight=CLASS_WEIGHT)
     optimizer = optim.Adam(params=model.parameters(), lr=LEARNING_RATE)

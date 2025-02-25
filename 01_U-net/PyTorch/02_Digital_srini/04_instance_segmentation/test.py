@@ -79,6 +79,7 @@ train_transform = A.Compose([
 
 val_transform = A.Compose([
     A.Resize(height=256, width=256),
+    A.Normalize(mean=[0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0], max_pixel_value=255.0),
     ToTensorV2()
 ])
 train, test = get_loaders(trainimg, trainmsk, trainimg, trainmsk, 8, train_transform, val_transform, 0, False)
@@ -87,5 +88,4 @@ train, test = get_loaders(trainimg, trainmsk, trainimg, trainmsk, 8, train_trans
 i,j = next(iter(train))
 print(f"unique of y = {np.unique(j)}")
 print(f"X: Min = {i.min()}, Max = {i.max()}")
-
-# %%
+print(f"{i.shape = }, {j.shape = }")
