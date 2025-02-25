@@ -31,7 +31,7 @@ def train_fn(loader, model, optimizer, loss_fn, scalar):
 
     for batch_idx, (images, targets) in enumerate(loop):
         images = images.to(device=DEVICE)
-        targets = targets.to(device=DEVICE, dtype=t.int64)
+        targets = targets.to(device=DEVICE, dtype=t.float32)
 
         # forward pass & loss calculations
         with t.autocast(device_type=DEVICE):
