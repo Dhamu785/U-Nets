@@ -4,7 +4,6 @@ import torchvision
 from torch.utils.data import DataLoader
 from dataset import DataSet
 
-# %%
 def save_checkpoint(state, filename="checkpoint.ckpt"):
     print("==> Saving the checkpoint")
     t.save(state, filename)
@@ -22,11 +21,11 @@ def get_loaders(traindir, trainmskdir, testdir, testmskdir, batch_size, train_tr
     test_loader = DataLoader(test_ds, batch_size, pin_memory=pin_memory, num_workers=num_workers)
 
     return train_loader, test_loader
-# %%
+
 def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
-    # num_correct = t.zeros((classes))
-    # num_pixels = t.zeros((classes), dtype=t.float)
-    # dice_score = t.zeros((classes), dtype=t.float)
+    num_correct = t.zeros((classes))
+    num_pixels = t.zeros((classes), dtype=t.float)
+    dice_score = t.zeros((classes), dtype=t.float)
 
     model.eval()
     with t.inference_mode():
@@ -45,7 +44,7 @@ def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
             print(f"Dice score for class_{score} = {dice_score[score] / len(loader):.2f}")
     model.train()
 
-# %%
+
 def save_predictions(model, folder_path, loader, device, epoch):
     model.eval()
     for idx, (x,y) in enumerate(loader):
