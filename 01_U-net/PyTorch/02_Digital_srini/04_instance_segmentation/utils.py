@@ -24,9 +24,9 @@ def get_loaders(traindir, trainmskdir, testdir, testmskdir, batch_size, train_tr
     return train_loader, test_loader
 # %%
 def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
-    num_correct = t.zeros((classes))
-    num_pixels = t.zeros((classes), dtype=t.float)
-    dice_score = t.zeros((classes), dtype=t.float)
+    # num_correct = t.zeros((classes))
+    # num_pixels = t.zeros((classes), dtype=t.float)
+    # dice_score = t.zeros((classes), dtype=t.float)
 
     model.eval()
     with t.inference_mode():
