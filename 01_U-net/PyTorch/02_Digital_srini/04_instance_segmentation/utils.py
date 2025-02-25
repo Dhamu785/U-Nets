@@ -50,8 +50,8 @@ def save_predictions(model, folder_path, loader, device, epoch):
         x = x.to(device)
 
         with t.inference_mode():
-            preds = t.argmax(model(x),1)
+            preds = t.argmax(model(x),1).to(dtype=t.float)
 
-        torchvision.utils.save_image(preds, f"{folder_path}/epoch-{epoch}_predictioni{idx}.png")
+        torchvision.utils.save_image(preds.unsqueeze(1), f"{folder_path}/epoch-{epoch}_predictioni{idx}.png")
         torchvision.utils.save_image(y.unsqueeze(1), f"{folder_path}/epoch-{epoch}_labels-{idx}.png")
         model.train()
