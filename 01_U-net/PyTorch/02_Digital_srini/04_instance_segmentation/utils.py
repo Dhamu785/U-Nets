@@ -1,4 +1,3 @@
-# %% import libs
 import torch as t
 import torchvision
 from torch.utils.data import DataLoader
