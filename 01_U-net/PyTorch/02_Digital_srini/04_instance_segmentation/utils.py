@@ -25,7 +25,6 @@ def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
     num_correct = t.zeros((classes), dtype=t.float, device=device)
     num_pixels = t.zeros((classes), dtype=t.float, device=device)
     dice_score = t.zeros((classes), dtype=t.float, device=device)
-
     model.eval()
     with t.inference_mode():
         for x, y in loader:
@@ -39,8 +38,12 @@ def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
                 dice_score[clss] += (2 * (p * true).sum() / (p + true).sum() + 1e-8)
                 num_pixels[clss] += true.sum()
         print("Dice score : ", end=' ')
+        cl_acc = []
         for score in range(len(dice_score)):
-            print(f"class_{score} = {dice_score[score] / len(loader):.2f}", end='\t')
+            class_acc = dice_score[score] / len(loader)
+            cl_acc.append(class_acc)
+            print(f"class_{score} = {class_acc:.2f}", end='\t')
+        print("Overall accuracy = ", t.mean(t.tensor(cl_acc, dtype=t.float32)), end='\t')
     model.train()
 
 
