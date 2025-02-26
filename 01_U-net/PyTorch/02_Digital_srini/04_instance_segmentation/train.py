@@ -26,8 +26,8 @@ TEST_MSK_DIR = ""
 CLASS_WEIGHT = []
 
 # %% train
-def train_fn(loader, model, optimizer, loss_fn, scalar):
-    loop = tqdm(loader)
+def train_fn(loader, model, optimizer, loss_fn, scalar, epoch):
+    loop = tqdm(loader, unit='batchs', desc=f'Epoch {epoch}/{NUM_EPOCHS} : ')
 
     for batch_idx, (images, targets) in enumerate(loop):
         images = images.to(device=DEVICE)
@@ -81,7 +81,7 @@ def main():
     scaler = t.GradScaler(DEVICE)
 
     for epoch in range(NUM_EPOCHS):
-        train_fn(train_loader, model, optimizer, loss_fn, scaler)
+        train_fn(train_loader, model, optimizer, loss_fn, scaler, epoch)
 
         check_point = {"state_dict": model.state_dict(), optimizer:optimizer.state_dict()}
         save_checkpoint(check_point)

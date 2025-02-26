@@ -38,9 +38,9 @@ def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
                 num_correct[clss] += (p == true).sum()
                 dice_score[clss] += (2 * (p * true).sum() / (p + true).sum() + 1e-8)
                 num_pixels[clss] += true.sum()
-
+        print("Dice score : ")
         for score in range(len(dice_score)):
-            print(f"Dice score for class_{score} = {dice_score[score] / len(loader):.2f}")
+            print(f"class_{score} = {dice_score[score] / len(loader):.2f} || ", end='\t')
     model.train()
 
 
