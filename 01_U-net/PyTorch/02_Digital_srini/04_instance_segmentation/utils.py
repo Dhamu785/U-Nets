@@ -43,7 +43,7 @@ def calc_accuracy(model, loader, classes: int, device:str | str='cuda'):
             class_acc = dice_score[score] / len(loader)
             cl_acc.append(class_acc)
             print(f"class_{score} = {class_acc:.2f}", end='\t')
-        print(f"Overall accuracy = , {t.mean(t.tensor(cl_acc, dtype=t.float32)).item():.3f}%")
+        print(f"Overall accuracy =  {t.mean(t.tensor(cl_acc, dtype=t.float32)).item():.3f*100} %")
     model.train()
 
 
