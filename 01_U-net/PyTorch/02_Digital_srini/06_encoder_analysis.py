@@ -14,9 +14,11 @@ print(f"CuDNN version = {t.backends.cudnn.version()}")
 print(f"CuDNN enabled = {t.backends.cudnn.enabled}")
 
 # %% Load model
-st_dict = t.load("C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\Models\\U-net_efficientnet.pt")
+model_path = '/Users/dhamodharan/My-Python/AI-Tutorials/Models/U-Net_resnet101.pt'
+# model_path = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\Models\\U-net_efficientnet.pt"
+st_dict = t.load(model_path, map_location=t.device(DEVICE))
 
-ENCODER_NAME = 'efficientnet-b3'
+ENCODER_NAME = 'resnet101'
 ENCODER_WEIGHT = 'imagenet'
 NUM_OF_CLS = 1
 
@@ -28,6 +30,10 @@ res = F.conv2d(t.randn(1,3,512,512, device=DEVICE), st_dict['encoder._conv_stem.
 # %%
 res.shape
 # %%
+layers = []
 for i in st_dict:
-    print(i)
+    if 'weight' in i:
+        layers.append(i)
+
+print(f"Total layers = {len(layers)}")
 # %%
