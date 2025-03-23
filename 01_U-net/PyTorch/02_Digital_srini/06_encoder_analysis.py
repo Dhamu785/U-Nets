@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import random
 
 from PIL import Image
+
 # %% GPU checks
 DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
 print(f"CUDA version = {t.version.cuda}")
@@ -36,22 +37,30 @@ pil_img = Image.open(img_path).convert('RGB')
 transformed = transform_img(pil_img).unsqueeze(0)
 print(transformed.shape)
 # %%
-res = F.conv2d(transformed.to(DEVICE), st_dict[layers[0]], padding=1).squeeze(0).permute(1,2,0).to('cpu')
-print(res.shape)
+def conv(inputs, layer_no):
+    res = F.conv2d(inputs.to(DEVICE), st_dict[layers[layer_no][0]], padding=1).squeeze(0)
+    print(res.shape)
+    return res
 
 # %%
-plt.imshow(res[:,:,60], cmap='gray')
+randoms = random.sample(range(0,64), 5)
 # %%
-res.device
-# %%
-def plot_(result):
-    randoms = random.sample(range(0,64), 10)
-    plt.figure(figsize=(2,10))
+def plot_(result, layer):
+    plt.figure(figsize=(2,5))
     for i in range(len(randoms)):
-        plt.subplot(10,1,i+1)
-        plt.imshow(res[:,:,randoms[i]], cmap='binary')
+        plt.subplot(5,1,i+1)
+        plt.imshow(result[:,:,randoms[i]], cmap='binary')
         plt.axis('off')
-    plt.show()
+    plt.suptitle(f'Layer-{layer}', size='medium', y=0.92)
+    plt.savefig(f'layer-{layer}.png')
+    # plt.show()
 
-plot_(res)
+# %%
+res = transform_img(pil_img).unsqueeze(0)
+
+for i,j in enumerate(layers):
+    res = conv(res, i)
+    ress = res.permute(1,2,0).to('cpu')
+    print(ress.shape)
+    plot_(ress, i)
 # %%
