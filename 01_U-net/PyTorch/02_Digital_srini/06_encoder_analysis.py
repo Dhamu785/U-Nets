@@ -1,12 +1,13 @@
 # %% import libs
 import torch as t
 import torch.nn.functional as F
+from torchvision import transforms
+from torchvision.utils import make_grid
 import matplotlib.pyplot as plt
-import numpy as np
 
-import os
+import random
 
-import segmentation_models_pytorch as smp
+from PIL import Image
 # %% GPU checks
 DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
 print(f"CUDA version = {t.version.cuda}")
@@ -14,26 +15,43 @@ print(f"CuDNN version = {t.backends.cudnn.version()}")
 print(f"CuDNN enabled = {t.backends.cudnn.enabled}")
 
 # %% Load model
-model_path = '/Users/dhamodharan/My-Python/AI-Tutorials/Models/U-Net_resnet101.pt'
-# model_path = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\Models\\U-net_efficientnet.pt"
-st_dict = t.load(model_path, map_location=t.device(DEVICE))
+# model_path = '/Users/dhamodharan/My-Python/AI-Tutorials/Models/U-Net_resnet101.pt'
+model_path = "C:\\Users\\dhamu\\Documents\\Python all\\torch_works\\01\\Models\\Carvana_Image_wt.pt"
+st_dict = t.load(model_path, map_location=t.device(DEVICE), weights_only=True)
 
-ENCODER_NAME = 'resnet101'
-ENCODER_WEIGHT = 'imagenet'
-NUM_OF_CLS = 1
-
-model = smp.Unet(encoder_name=ENCODER_NAME, encoder_weights=ENCODER_WEIGHT, in_channels=3, classes=NUM_OF_CLS).to(DEVICE)
-model = model.load_state_dict(state_dict=st_dict)
-
-# %% 
-res = F.conv2d(t.randn(1,3,512,512, device=DEVICE), st_dict['encoder._conv_stem.weight'])
-# %%
-res.shape
-# %%
 layers = []
 for i in st_dict:
     if 'weight' in i:
-        layers.append(i)
-
+        layers.append((i, st_dict[i].shape))
 print(f"Total layers = {len(layers)}")
+
+# %% 
+transform_img = transforms.Compose([
+            transforms.Resize((512,512)),
+            transforms.ToTensor()
+        ])
+img_path = r"C:\Users\dhamu\Documents\Python all\torch_works\01\dataset\01_semantic segmentation\X\0cdf5b5d0ce1_03.jpg"
+pil_img = Image.open(img_path).convert('RGB')
+
+transformed = transform_img(pil_img).unsqueeze(0)
+print(transformed.shape)
+# %%
+res = F.conv2d(transformed.to(DEVICE), st_dict[layers[0]], padding=1).squeeze(0).permute(1,2,0).to('cpu')
+print(res.shape)
+
+# %%
+plt.imshow(res[:,:,60], cmap='gray')
+# %%
+res.device
+# %%
+def plot_(result):
+    randoms = random.sample(range(0,64), 10)
+    plt.figure(figsize=(2,10))
+    for i in range(len(randoms)):
+        plt.subplot(10,1,i+1)
+        plt.imshow(res[:,:,randoms[i]], cmap='binary')
+        plt.axis('off')
+    plt.show()
+
+plot_(res)
 # %%
