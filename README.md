@@ -12,16 +12,29 @@
 
 #### 02_Digital_srini
 
-1. [Watershed](https://youtu.be/lOZDTDOlqfk?si=4qumQIubzNk-0lSg)
-    - skimage.measure
-    - skimage.color
-2. [Patchify](https://youtu.be/LM9yisNYfyw?si=yfS69X_scKEQBvDb)
-    - patchify.patchhify
-    - patchify.unpatchify
-3. [IOU](https://youtu.be/BNPW1mYbgS4?si=xjmlOIrjgNDb0xfw)
-
-    - formula
-    - Dice coefficient(Mostly used in medical images)
+- Loss functions for segmentations - [[02_Maths#Loss functions |losses]] 
+	- IoU 
+	- Dice coefficient
+	- Focal loss (2017) - [paper](https://arxiv.org/pdf/1708.02002) 
+- Multi class semantic segmentation model training
+	- Weight distribution for different class
+	- Predict large image using patchify library (**stack in tiff file**).
+	- Explore some methods like smooth blending between two patchs
+- ==Segmentation models - Library for backbone== 
+	- Available in both pytorch and tensorflow
+	- Many pre-trained backbones are available for transfer learning.
+	- [Refer](https://smp.readthedocs.io/en/latest/) documentation for more information.
+	- Example [code](https://github.com/bnsreenu/python_for_microscopists/blob/master/210_multiclass_Unet_using_VGG_resnet_inception.py) 
+	- Refer my [Kaggle](https://www.kaggle.com/code/dhamur/u-net-with-backbones) notebook for practical implementations. 
+- LinkNet in smp
+	- Light weight when compared with unet
+	- unet (2015) - [paper](https://arxiv.org/pdf/1505.04597) 
+	- linknet (2017) - [paper](https://arxiv.org/pdf/1707.03718) 
+- Ensemble technique to enhance the u-net model
+	- Use different model (min 3 models)
+	- Tutorials - [GitHub](https://github.com/bnsreenu/python_for_microscopists/blob/master/213-ensemble_sign_language.py) [YT](https://www.youtube.com/watch?v=NFIYdYjJams&list=PLZsOBAyNTZwbR08R959iCvYT3qzhxvGOE&index=18) 
+	- Practice - [Kaggle](https://www.kaggle.com/code/dhamur/u-net-with-backbones-ensembling) 
+	- Backbone comparison [paper](https://iopscience.iop.org/article/10.1088/1742-6596/1544/1/012196/pdf) 
 
 ---
 
