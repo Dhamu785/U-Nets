@@ -20,7 +20,7 @@
 	- Weight distribution for different class
 	- Predict large image using patchify library (**stack in tiff file**).
 	- Explore some methods like smooth blending between two patchs
-- ==Segmentation models - Library for backbone== 
+- Segmentation models - Library for backbone
 	- Available in both pytorch and tensorflow
 	- Many pre-trained backbones are available for transfer learning.
 	- [Refer](https://smp.readthedocs.io/en/latest/) documentation for more information.
