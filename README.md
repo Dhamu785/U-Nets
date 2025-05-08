@@ -57,6 +57,7 @@
 - t.numel, t.permutr | np.ravel
 - tqdm.set_postfix
 - Dice loss
+- ModuleList()
 
 ---
 
