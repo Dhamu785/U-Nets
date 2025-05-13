@@ -19,9 +19,9 @@ def train():
         shutil.rmtree(sav_mdl)
     os.mkdir(sav_mdl)
         
-    LEARNING_RATE = 1e-4
+    LEARNING_RATE = 1e-3
     BATCH_SIZE = 8
-    EPOCHS = 50
+    EPOCHS = 80
     DATA_PATH = "/kaggle/input/cad-data/data"
     MODEL_SAVE_PATH = "/models"
     DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
@@ -143,5 +143,5 @@ def train():
             plot_img(model, epoch)
 
         print(f"{epoch} / {EPOCHS} | train_loss = {train_loss_per_batch:.4f} | train_acc = {train_acc_per_batch:.4f} | test_loss = {test_loss_per_batch:.4f} | test_acc = {test_acc_per_batch:.4f}")
-    t.save(model.state_dict(), "Image_enhancement_sd.pt")
+        t.save(model.state_dict(), f"Image_enhancement_sd-{epoch}.pt")
     # t.save(model, "Image_enhancement-em.pt")
