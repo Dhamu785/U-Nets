@@ -13,7 +13,7 @@ def train():
 
     import torch.nn.functional as F
     LEARNING_RATE = 1e-4
-    BATCH_SIZE = 4
+    BATCH_SIZE = 8
     EPOCHS = 50
     DATA_PATH = "/kaggle/input/cad-data/data"
     MODEL_SAVE_PATH = "/"
