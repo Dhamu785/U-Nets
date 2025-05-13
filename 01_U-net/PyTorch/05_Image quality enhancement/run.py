@@ -1,3 +1,4 @@
+import os
 def train():
     import torch as t
     from tqdm import tqdm
@@ -6,7 +7,6 @@ def train():
     from torchvision import transforms
     import torch.nn.functional as F
 
-    import os
     import matplotlib.pyplot as plt
     from PIL import Image
     import shutil
