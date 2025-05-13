@@ -143,5 +143,5 @@ def train():
             plot_img(model, epoch)
 
         print(f"{epoch} / {EPOCHS} | train_loss = {train_loss_per_batch:.4f} | train_acc = {train_acc_per_batch:.4f} | test_loss = {test_loss_per_batch:.4f} | test_acc = {test_acc_per_batch:.4f}")
-        t.save(model.state_dict(), os.path.join(MODEL_SAVE_PATH, f"Image_enhancement_sd-{epoch}.pt"))
+        t.save(model.state_dict(), os.path.join('/kaggle/working/models', f"Image_enhancement_sd-{epoch}.pt"))
     # t.save(model, "Image_enhancement-em.pt")
