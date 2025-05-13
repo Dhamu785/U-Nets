@@ -4,19 +4,25 @@ def train():
     from torch.utils.data import DataLoader, random_split
     from torch import nn, optim
     from torchvision import transforms
+    import torch.nn.functional as F
 
     import matplotlib.pyplot as plt
     from PIL import Image
-
+    import shutil
+    
     from dataset import seg_dataset
     from unet import unet
-
-    import torch.nn.functional as F
+    
+    sav_mdl = 'models'
+    if os.path.exists(sav_mdl):
+        shutil.rmtree(sav_mdl)
+    os.mkdir(sav_mdl)
+        
     LEARNING_RATE = 1e-4
     BATCH_SIZE = 8
     EPOCHS = 50
     DATA_PATH = "/kaggle/input/cad-data/data"
-    MODEL_SAVE_PATH = "/"
+    MODEL_SAVE_PATH = "/models"
     DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
 
     data = seg_dataset(DATA_PATH)
@@ -61,7 +67,8 @@ def train():
         plt.imshow(pred[0][0].detach().to('cpu').numpy(), cmap='gray')
         plt.title('Predicted mask')
         plt.axis('off')
-        plt.savefig(f"epoch_{epoch}.png")
+        # plt.savefig(f"epoch_{epoch}.png")
+        plt.show()
 
     def loss_iou(y_pred, y_true, inf):
         if not inf:
