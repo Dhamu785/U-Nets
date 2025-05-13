@@ -15,8 +15,8 @@ def train():
     LEARNING_RATE = 1e-4
     BATCH_SIZE = 4
     EPOCHS = 50
-    DATA_PATH = "./kaggle/input/cad-data/data"
-    MODEL_SAVE_PATH = "./"
+    DATA_PATH = "kaggle/input/cad-data/data"
+    MODEL_SAVE_PATH = "/"
     DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
 
     data = seg_dataset(DATA_PATH)
@@ -31,8 +31,8 @@ def train():
     optimizer = optim.Adam(params = model.parameters(), lr=LEARNING_RATE)
     loss = nn.BCEWithLogitsLoss()
 
-    single_img = "./kaggle/input/cad-data/data/X/43823974.jpeg"
-    single_target = "./kaggle/input/cad-data/data/Y/43823974.jpeg"
+    single_img = "kaggle/input/cad-data/data/X/43823974.jpeg"
+    single_target = "kaggle/input/cad-data/data/Y/43823974.jpeg"
     img = Image.open(single_img).convert('RGB')
     msk = Image.open(single_target).convert('L')
     transforms_pipe = transforms.Compose([
