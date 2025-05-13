@@ -6,10 +6,10 @@ def train():
     from torchvision import transforms
     import torch.nn.functional as F
 
+    import os
     import matplotlib.pyplot as plt
     from PIL import Image
     import shutil
-    import os
     
     from dataset import seg_dataset
     from unet import unet
