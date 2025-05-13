@@ -9,6 +9,7 @@ def train():
     import matplotlib.pyplot as plt
     from PIL import Image
     import shutil
+    import os
     
     from dataset import seg_dataset
     from unet import unet
