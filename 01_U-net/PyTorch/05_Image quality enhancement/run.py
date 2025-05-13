@@ -15,9 +15,9 @@ def train():
     from unet import unet
     
     sav_mdl = 'models'
-    # if os.path.exists(sav_mdl):
-    #     shutil.rmtree(sav_mdl)
-    # os.mkdir(sav_mdl)
+    if os.path.exists(sav_mdl):
+        shutil.rmtree(sav_mdl)
+    os.mkdir(sav_mdl)
         
     LEARNING_RATE = 1e-4
     BATCH_SIZE = 8
