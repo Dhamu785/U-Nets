@@ -19,7 +19,7 @@ def train():
         shutil.rmtree(sav_mdl)
     os.mkdir(sav_mdl)
         
-    LEARNING_RATE = 1e-3
+    LEARNING_RATE = 1e-5
     BATCH_SIZE = 8
     EPOCHS = 80
     DATA_PATH = "/kaggle/input/cad-data/data"
