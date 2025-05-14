@@ -18,7 +18,7 @@ if os.path.exists(sav_mdl):
     shutil.rmtree(sav_mdl)
 os.mkdir(sav_mdl)
 
-def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sample_y: str):
+def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sample_y: str, pre_trained: bool, model_path: str=None):
     LEARNING_RATE = lr
     BATCH_SIZE = bth_size
     EPOCHS = epoch
@@ -35,8 +35,10 @@ def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sa
     val_dataloader = DataLoader(val_dataset, BATCH_SIZE, True)
 
     model = unet(in_channel=3, num_classes=1).to(DEVICE)
+    if pre_trained:
+        model.load_state_dict(t.load(model_path, map_location=t.device(DEVICE), weights_only=True))
     optimizer = optim.Adam(params = model.parameters(), lr=LEARNING_RATE)
-    loss = nn.BCEWithLogitsLoss()
+    # loss = nn.BCEWithLogitsLoss()
 
     single_img = sample_x
     single_target = sample_y
@@ -97,6 +99,11 @@ def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sa
         count = t.eq(y_pred, y_true).sum().item()
         return (count/len(y_pred)) * 100
 
+    train_ls = []
+    train_acc = []
+    val_ls = []
+    val_acc = []
+
     for epoch in range(EPOCHS):
         model.train()
         train_loss_per_batch = 0
@@ -142,6 +149,12 @@ def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sa
             test_acc_per_batch /= idx+1
             plot_img(model, epoch)
 
+        train_ls.append(train_acc_per_batch)
+        train_acc.append(train_acc_per_batch)
+        val_ls.append(test_loss_per_batch)
+        val_acc.append(test_acc_per_batch)
+
         print(f"{epoch} / {EPOCHS} | train_loss = {train_loss_per_batch:.4f} | train_acc = {train_acc_per_batch:.4f} | test_loss = {test_loss_per_batch:.4f} | test_acc = {test_acc_per_batch:.4f}")
         t.save(model.state_dict(), os.path.join(os.getcwd(), MODEL_SAVE_PATH, f"Image_enhancement_sd-{epoch}.pt"))
     # t.save(model, "Image_enhancement-em.pt")
+    return train_ls, train_acc, val_ls, val_acc
