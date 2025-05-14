@@ -23,7 +23,7 @@ def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sa
     BATCH_SIZE = bth_size
     EPOCHS = epoch
     DATA_PATH = data_path
-    MODEL_SAVE_PATH = "/models"
+    MODEL_SAVE_PATH = "models"
     DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
 
     data = seg_dataset(DATA_PATH)
