@@ -19,9 +19,9 @@ def train():
         shutil.rmtree(sav_mdl)
     os.mkdir(sav_mdl)
         
-    LEARNING_RATE = 1e-5
+    LEARNING_RATE = 1e-4
     BATCH_SIZE = 8
-    EPOCHS = 80
+    EPOCHS = 50
     DATA_PATH = "/kaggle/input/cad-data/data"
     MODEL_SAVE_PATH = "/models"
     DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
