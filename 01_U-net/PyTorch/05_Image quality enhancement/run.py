@@ -119,12 +119,13 @@ def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sa
             ls = loss_iou(y_pred, mask, False)
 
             acc = acc_iou(y_pred, mask, False)
-            train_loss_per_batch += ls
-            train_acc_per_batch += acc
+            train_loss_per_batch += ls.item()
+            train_acc_per_batch += acc.item()
 
             optimizer.zero_grad()
             ls.backward()
             optimizer.step()
+            epoch_pbar.set_postfix(loss=ls.item(), accuracy=acc.item())
             epoch_pbar.update(1)
         epoch_pbar.close()
         train_loss_per_batch /= idx+1
@@ -142,8 +143,8 @@ def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sa
                 test_ls = loss_iou(y_pred_test, mask, True)
                 test_acc = acc_iou(y_pred_test, mask, True)
 
-                test_loss_per_batch += test_ls
-                test_acc_per_batch += test_acc
+                test_loss_per_batch += test_ls.item()
+                test_acc_per_batch += test_acc.item()
             
             test_loss_per_batch /= idx+1
             test_acc_per_batch /= idx+1
