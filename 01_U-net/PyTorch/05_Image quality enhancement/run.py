@@ -1,28 +1,28 @@
 import os
-def train():
-    import torch as t
-    from tqdm import tqdm
-    from torch.utils.data import DataLoader, random_split
-    from torch import nn, optim
-    from torchvision import transforms
-    import torch.nn.functional as F
+import torch as t
+from tqdm import tqdm
+from torch.utils.data import DataLoader, random_split
+from torch import nn, optim
+from torchvision import transforms
+import torch.nn.functional as F
 
-    import matplotlib.pyplot as plt
-    from PIL import Image
-    import shutil
-    
-    from dataset import seg_dataset
-    from unet import unet
-    
-    sav_mdl = 'models'
-    if os.path.exists(sav_mdl):
-        shutil.rmtree(sav_mdl)
-    os.mkdir(sav_mdl)
-        
-    LEARNING_RATE = 1e-4
-    BATCH_SIZE = 8
-    EPOCHS = 50
-    DATA_PATH = "/kaggle/input/cad-data/Gray data"
+import matplotlib.pyplot as plt
+from PIL import Image
+import shutil
+
+from dataset import seg_dataset
+from unet import unet
+
+sav_mdl = 'models'
+if os.path.exists(sav_mdl):
+    shutil.rmtree(sav_mdl)
+os.mkdir(sav_mdl)
+
+def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sample_y: str):
+    LEARNING_RATE = lr
+    BATCH_SIZE = bth_size
+    EPOCHS = epoch
+    DATA_PATH = data_path
     MODEL_SAVE_PATH = "/models"
     DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
 
@@ -38,8 +38,8 @@ def train():
     optimizer = optim.Adam(params = model.parameters(), lr=LEARNING_RATE)
     loss = nn.BCEWithLogitsLoss()
 
-    single_img = "/kaggle/input/cad-data/data/X/43823974.jpeg"
-    single_target = "/kaggle/input/cad-data/data/Y/43823974.jpeg"
+    single_img = sample_x
+    single_target = sample_y
     img = Image.open(single_img).convert('RGB')
     msk = Image.open(single_target).convert('L')
     transforms_pipe = transforms.Compose([
@@ -143,5 +143,5 @@ def train():
             plot_img(model, epoch)
 
         print(f"{epoch} / {EPOCHS} | train_loss = {train_loss_per_batch:.4f} | train_acc = {train_acc_per_batch:.4f} | test_loss = {test_loss_per_batch:.4f} | test_acc = {test_acc_per_batch:.4f}")
-        t.save(model.state_dict(), os.path.join('/kaggle/working/models', f"Image_enhancement_sd-{epoch}.pt"))
+        t.save(model.state_dict(), os.path.join('/kaggle/working', MODEL_SAVE_PATH, f"Image_enhancement_sd-{epoch}.pt"))
     # t.save(model, "Image_enhancement-em.pt")
