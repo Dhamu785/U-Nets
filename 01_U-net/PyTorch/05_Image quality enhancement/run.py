@@ -150,7 +150,7 @@ def train(lr: float, bth_size: int, epoch:int, data_path: str, sample_x: str, sa
             test_acc_per_batch /= idx+1
             plot_img(model, epoch)
 
-        train_ls.append(train_acc_per_batch)
+        train_ls.append(train_loss_per_batch)
         train_acc.append(train_acc_per_batch)
         val_ls.append(test_loss_per_batch)
         val_acc.append(test_acc_per_batch)
