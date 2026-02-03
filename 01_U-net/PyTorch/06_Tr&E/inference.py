@@ -6,13 +6,18 @@ import os
 import torch.nn.functional as F
 from tqdm import tqdm
 import numpy as np
+import shutil
 
 DEVICE = 'cuda' if t.cuda.is_available() else 'cpu'
-PATH = 'D:\\New method template removal\\SWIN TRAINING\\IMAGE ENHANCEMENT\\Dataset\\clean'
-SAV_DIR = 'D:\\New method template removal\\SWIN TRAINING\\IMAGE ENHANCEMENT\\Dataset\\enhanced'
+cwd = os.getcwd()
+PATH = os.path.join(cwd, 'data', 'processed')
+SAV_DIR = os.path.join(cwd, 'data', 'enhanced')
+if os.path.exists(SAV_DIR):
+    shutil.rmtree(SAV_DIR)
+os.makedirs(SAV_DIR)
 
 model = unet(in_channel=3, num_classes=1).to(DEVICE)
-model.load_state_dict(t.load("D:\\New method template removal\\SWIN TRAINING\\IMAGE ENHANCEMENT\\UNET\\models\\Image_enhancement_sd.pt", map_location=t.device(DEVICE), weights_only=True))
+model.load_state_dict(t.load(os.path.join(cwd, "models", "Image_enhancement_sd.pt"), map_location=t.device(DEVICE), weights_only=True))
 transform_img = transforms.Compose([
                 transforms.Resize((512,512)),
                 transforms.ToTensor()
