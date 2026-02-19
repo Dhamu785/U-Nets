@@ -22,11 +22,12 @@ class Edge_IoU(t.nn.Module):
         projected_target = target.view((target.size(0), -1))
         projected_pred = pred.view((target.size(0), -1))
 
-        intersection = (projected_target * projected_pred).sum(dim=1)
-        union = projected_pred.sum(dim=1) + projected_target.sum(dim=1) - intersection
-        iou = (intersection + 1e-5) / (union + 1e-5)
+        intersection = projected_target * projected_pred
+        intersection_sum = intersection.sum(dim=1)
+        union = projected_pred.sum(dim=1) + projected_target.sum(dim=1) - intersection_sum
+        iou = (intersection_sum + 1e-5) / (union + 1e-5)
         iou_loss = 1 - iou
-        return iou_loss.mean(), target, pred
+        return iou_loss.mean(), target, intersection.view((target.shape))
     
     def edge_loss(self, target, pred):
         t_x = F.conv2d(target, self.sobel_X, padding=1)
