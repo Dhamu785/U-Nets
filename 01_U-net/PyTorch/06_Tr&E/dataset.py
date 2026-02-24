@@ -11,11 +11,11 @@ class seg_dataset(Dataset):
     def __init__(self, path, test=False):
         self.path = path
         if test:
-            self.images = sorted([os.path.join(path, "X", i) for i in os.listdir(os.path.join(path, "X"))])
-            self.labels = sorted([os.path.join(path, "Y", i) for i in os.listdir(os.path.join(path, "Y"))])
+            self.images = sorted([os.path.join(path, "Clean", i) for i in os.listdir(os.path.join(path, "Clean"))])
+            self.labels = sorted([os.path.join(path, "Noise", i) for i in os.listdir(os.path.join(path, "Noise"))])
         else:
-            self.images = sorted([os.path.join(path, "X", i) for i in os.listdir(os.path.join(path, "X"))])
-            self.labels = sorted([os.path.join(path, "Y", i) for i in os.listdir(os.path.join(path, "Y"))])
+            self.images = sorted([os.path.join(path, "Clean", i) for i in os.listdir(os.path.join(path, "Clean"))])
+            self.labels = sorted([os.path.join(path, "Noise", i) for i in os.listdir(os.path.join(path, "Noise"))])
 
         # self.transforms = transforms.Compose([
         #     transforms.Resize((512,512)),
