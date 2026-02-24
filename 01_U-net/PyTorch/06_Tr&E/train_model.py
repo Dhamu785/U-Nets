@@ -64,15 +64,6 @@ transforms_pipe = transforms.Compose([
         transforms.ToTensor()
     ])
 
-# angles = [0, 90, 180, 270]
-# transforms_pipe = transforms.Compose([
-#     transforms.Resize((512, 512)),  # example preprocessing
-#     transforms.RandomHorizontalFlip(p=0.5), # random left-right flip
-#     transforms.RandomVerticalFlip(p=0.5),
-#     transforms.Lambda(lambda img: TF.rotate(img, random.choice(angles))),
-#     transforms.ToTensor()
-# ])
-
 img_transformed = transforms_pipe(img)
 msk_transformed = transforms_pipe(msk)
 
@@ -98,27 +89,9 @@ def plot_img(model, epoch):
     plt.savefig(os.path.join(IMG_SAVE_PATH, f"epoch_{epoch}.png"))
     plt.close()
 
-# def loss_iou(y_pred, y_true, inf):
-#     if not inf:
-#         if not y_pred.requires_grad:
-#             raise ValueError("y_pred should have gradient tracking")
-
-#     device = y_pred.device
-#     y_true = t.where(y_true <= 0, t.ones_like(y_pred, device=device), t.zeros_like(y_pred, device=device)).view((y_true.size(0), -1))
-#     y_pred = t.sigmoid(y_pred).view((y_true.size(0), -1))
-#     # y_pred = t.where(y_pred <= 0.5, t.zeros_like(y_pred, device=device), t.ones_like(y_pred, device=device)).requires_grad_(True)
-    
-#     intersection = (y_pred * y_true).sum(dim=1)
-#     union = y_pred.sum(dim=1) + y_true.sum(dim=1)
-    
-#     iou = (intersection + 1e-5) / ((union + 1e-5) - intersection)
-#     iou_loss = 1 - iou.mean()
-#     return iou_loss
-loss_iou = Edge_IoU(0.6, 0.4, DEVICE)
-
+loss_iou = Edge_IoU(device=DEVICE)
 
 scaler = t.GradScaler(device=DEVICE)
-
 for epoch in range(1, EPOCHS+1):
     model.train()
     train_loss_per_batch = 0

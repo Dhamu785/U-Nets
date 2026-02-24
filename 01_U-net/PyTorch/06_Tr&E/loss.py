@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from typing import Tuple
 
 class Edge_IoU(t.nn.Module):
-    def __init__(self, w1: float, w2: float, w3: float, device: str) -> None:
+    def __init__(self, w1: float=0.6, w2: float=0.4, w3: float=0.0, device: str='cuda') -> None:
         super().__init__()
         self.w1 = w1
         self.w2 = w2
@@ -18,9 +18,6 @@ class Edge_IoU(t.nn.Module):
     def IOU(self, target: t.Tensor, pred: t.Tensor) -> Tuple[t.Tensor, t.Tensor, t.Tensor]:
         # if not pred.requires_grad:
         #     raise ValueError("Predictions must have gradient tracking")
-        target = t.where(target <= 0, t.ones_like(target, device=self.device), 
-                            t.zeros_like(target, device=self.device))
-        pred = t.sigmoid(pred)
         projected_target = target.view((target.size(0), -1))
         projected_pred = pred.view((target.size(0), -1))
 
@@ -43,7 +40,8 @@ class Edge_IoU(t.nn.Module):
     
     def forward(self, target: t.Tensor, pred: t.Tensor) -> t.Tensor:
         bce = self.bce(pred, target)
-        iou_loss, target, pred = self.IOU(target, pred)
+        pred = t.sigmoid(pred)
+        # iou_loss, target, pred = self.IOU(target, pred)
         e_loss = self.edge_loss(target, pred)
-        loss = self.w1*iou_loss + self.w2*e_loss + bce*self.w3
+        loss = self.w1*bce + self.w2*e_loss
         return loss
