@@ -2,31 +2,17 @@ import torch as t
 import torch.nn.functional as F
 from typing import Tuple
 
-class Edge_IoU(t.nn.Module):
-    def __init__(self, w1: float=0.6, w2: float=0.4, w3: float=0.0, device: str='cuda') -> None:
+class Edge_BCE(t.nn.Module):
+    def __init__(self, w1: float=0.6, w2: float=0.4, device: str='cuda') -> None:
         super().__init__()
         self.w1 = w1
         self.w2 = w2
-        self.w3 = w3
         self.device = device
         sobel_X = t.tensor([[-1,0,1],[-2,0,2],[-1,0,1]], device=device, dtype=t.float32).view(1,1,3,3)
         sobel_Y = t.tensor([[-1,-2,-1],[0,0,0],[1,2,1]], device=device, dtype=t.float32).view(1,1,3,3)
         self.register_buffer("sobel_X", sobel_X)
         self.register_buffer("sobel_Y", sobel_Y)
         self.bce = t.nn.BCEWithLogitsLoss()
-
-    def IOU(self, target: t.Tensor, pred: t.Tensor) -> Tuple[t.Tensor, t.Tensor, t.Tensor]:
-        # if not pred.requires_grad:
-        #     raise ValueError("Predictions must have gradient tracking")
-        projected_target = target.view((target.size(0), -1))
-        projected_pred = pred.view((target.size(0), -1))
-
-        intersection = projected_target * projected_pred
-        intersection_sum = intersection.sum(dim=1)
-        union = projected_pred.sum(dim=1) + projected_target.sum(dim=1) - intersection_sum
-        iou = (intersection_sum + 1e-5) / (union + 1e-5)
-        iou_loss = 1 - iou
-        return iou_loss.mean(), target, pred
     
     def edge_loss(self, target, pred):
         t_x = F.conv2d(target, self.sobel_X, padding=1)
@@ -41,7 +27,6 @@ class Edge_IoU(t.nn.Module):
     def forward(self, target: t.Tensor, pred: t.Tensor) -> t.Tensor:
         bce = self.bce(pred, target)
         pred = t.sigmoid(pred)
-        # iou_loss, target, pred = self.IOU(target, pred)
         e_loss = self.edge_loss(target, pred)
         loss = self.w1*bce + self.w2*e_loss
         return loss
