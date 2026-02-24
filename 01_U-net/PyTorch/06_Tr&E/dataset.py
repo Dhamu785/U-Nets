@@ -19,9 +19,11 @@ class seg_dataset(Dataset):
 
         self.transforms = A.Compose([
             A.Resize(512, 512),  # cv2.INTER_LINEAR for image
-            A.HorizontalFlip(p=0.5),
-            A.VerticalFlip(p=0.5),
-            A.RandomRotate90(p=0.5),              # handles 0/90/180/270
+            # A.HorizontalFlip(p=0.5),
+            # A.VerticalFlip(p=0.5),
+            # A.RandomRotate90(p=0.5),              # handles 0/90/180/270/
+            A.ShiftScaleRotate(shift_limit=0.02, scale_limit=0.02, rotate_limit=2, border_mode=0, p=0.5,),
+            A.GaussNoise(std_range=(0.01, 0.05), p=0.3),
             A.GaussianBlur(blur_limit=3, p=0.2),
             ToTensorV2()
         ], additional_targets={'mask': 'mask'}, is_check_shapes=True)
