@@ -18,10 +18,7 @@ class seg_dataset(Dataset):
             self.labels = sorted([os.path.join(path, "Noisy", i) for i in os.listdir(os.path.join(path, "Noisy"))])
 
         self.transforms = A.Compose([
-            A.Resize(512, 512),  # cv2.INTER_LINEAR for image
-            # A.HorizontalFlip(p=0.5),
-            # A.VerticalFlip(p=0.5),
-            # A.RandomRotate90(p=0.5),              # handles 0/90/180/270/
+            A.Resize(512, 512),
             A.ShiftScaleRotate(shift_limit=0.02, scale_limit=0.02, rotate_limit=2, border_mode=0, p=0.5,),
             A.GaussNoise(std_range=(0.01, 0.05), p=0.3),
             A.GaussianBlur(blur_limit=3, p=0.2),
@@ -29,8 +26,8 @@ class seg_dataset(Dataset):
         ], additional_targets={'mask': 'mask'}, is_check_shapes=True)
 
     def __getitem__(self, index):
-        img = np.array(Image.open(self.images[index]).convert('RGB'))
-        mask = np.array(Image.open(self.labels[index]).convert('L'))
+        img = np.array(Image.open(self.images[index]).convert('L'), dtype=np.uint8)
+        mask = np.array(Image.open(self.labels[index]).convert('L'), dtype=np.uint8)
         aug = self.transforms(image=img, mask=mask)
 
         return aug['image']/255.0, aug['mask'].unsqueeze(0)/255.0

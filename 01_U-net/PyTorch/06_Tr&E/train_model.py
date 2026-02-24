@@ -18,7 +18,7 @@ from dataset import seg_dataset
 from unet import unet
 
 LEARNING_RATE = 1e-4
-BATCH_SIZE = 24
+BATCH_SIZE = 8
 EPOCHS = 50
 
 cwd = os.getcwd()
@@ -48,11 +48,8 @@ val_dataloader = DataLoader(val_dataset, BATCH_SIZE, True)
 
 print(next(iter(train_dataloader))[1].dtype)
 
-model = unet(in_channel=3, num_classes=1).to(DEVICE)
-model_path = os.path.join(cwd, 'base model', 'Image_enhancement_sd-18.pt')
-model.load_state_dict(t.load(model_path, map_location=t.device(DEVICE), weights_only=True))
-optimizer = optim.Adam(params = model.parameters(), lr=LEARNING_RATE)
-loss = nn.BCEWithLogitsLoss()
+model = unet(in_channel=1, num_classes=1).to(DEVICE)
+optimizer = optim.AdamW(params = model.parameters(), lr=LEARNING_RATE, weight_decay=LEARNING_RATE)
 
 single_img = os.path.join(cwd, "combined data", "X", "103.jpeg")
 single_target = os.path.join(cwd, "combined data", "Y", "103.png")
@@ -91,7 +88,7 @@ def plot_img(model, epoch):
 
 loss_iou = Edge_IoU(device=DEVICE)
 
-scaler = t.GradScaler(device=DEVICE)
+scaler = t.amp.GradScaler(DEVICE)
 for epoch in range(1, EPOCHS+1):
     model.train()
     train_loss_per_batch = 0
