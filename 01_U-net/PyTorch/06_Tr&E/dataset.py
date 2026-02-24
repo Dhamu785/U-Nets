@@ -26,7 +26,7 @@ class seg_dataset(Dataset):
         ], additional_targets={'mask': 'mask'}, is_check_shapes=True)
 
     def __getitem__(self, index):
-        img = np.array(Image.open(self.images[index]).convert('L'), dtype=np.uint8)
+        img = np.array(Image.open(self.images[index]).convert('RGB'), dtype=np.uint8)
         mask = np.array(Image.open(self.labels[index]).convert('L'), dtype=np.uint8)
         aug = self.transforms(image=img, mask=mask)
 

@@ -48,7 +48,7 @@ val_dataloader = DataLoader(val_dataset, BATCH_SIZE, True)
 
 print(next(iter(train_dataloader))[1].dtype)
 
-model = unet(in_channel=1, num_classes=1).to(DEVICE)
+model = unet(in_channel=3, num_classes=1).to(DEVICE)
 optimizer = optim.AdamW(params = model.parameters(), lr=LEARNING_RATE, weight_decay=LEARNING_RATE)
 
 single_img = os.path.join(cwd, "combined data", "X", "103.jpeg")
