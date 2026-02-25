@@ -94,8 +94,8 @@ for epoch in range(1, EPOCHS+1):
     train_loss_per_batch = 0
     bar = tqdm(range(TRAIN_NO_OF_BATCHES), desc="Batch processing", unit="batchs", colour='GREEN')
     for idx,batch in enumerate(train_dataloader):
-        img = batch[0].float().to(DEVICE, non_blocking=True)
-        mask = batch[1].float().to(DEVICE, non_blocking=True)
+        img = batch[0].to(DEVICE)
+        mask = batch[1].to(DEVICE)
 
         # 1. Forward pass
         with t.autocast(device_type=DEVICE):
