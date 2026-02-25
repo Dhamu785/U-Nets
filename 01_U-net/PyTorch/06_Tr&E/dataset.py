@@ -15,7 +15,7 @@ class seg_dataset(Dataset):
 
         self.transforms = A.Compose([
             A.Resize(512, 512),
-            A.Affine(shift_limit=0.02, scale_limit=0.02, rotate_limit=2, border_mode=0, p=0.5,),
+            A.Affine(translate_percent=0.02, scale=(0.98, 1.02), rotate=(-2, 2), border_mode=0, p=0.5)
             A.GaussNoise(std_range=(0.01, 0.05), p=0.3),
             A.GaussianBlur(blur_limit=3, p=0.2),
             ToTensorV2()
