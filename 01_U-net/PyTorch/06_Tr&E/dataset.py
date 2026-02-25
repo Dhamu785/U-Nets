@@ -10,8 +10,8 @@ from albumentations.pytorch import ToTensorV2
 class seg_dataset(Dataset):
     def __init__(self, path):
         self.path = path
-        self.images = sorted([os.path.join(path, "Clean", i) for i in os.listdir(os.path.join(path, "Clean"))])
-        self.labels = sorted([os.path.join(path, "Noisy", i) for i in os.listdir(os.path.join(path, "Noisy"))])
+        self.images = sorted([os.path.join(path, "Noisy", i) for i in os.listdir(os.path.join(path, "Noisy"))])
+        self.labels = sorted([os.path.join(path, "Clean", i) for i in os.listdir(os.path.join(path, "Clean"))])
 
         self.transforms = A.Compose([
             A.Resize(512, 512),
