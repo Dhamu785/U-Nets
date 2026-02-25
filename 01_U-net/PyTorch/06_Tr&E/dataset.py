@@ -8,14 +8,10 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
 class seg_dataset(Dataset):
-    def __init__(self, path, test=False):
+    def __init__(self, path):
         self.path = path
-        if test:
-            self.images = sorted([os.path.join(path, "Clean", i) for i in os.listdir(os.path.join(path, "Clean"))])
-            self.labels = sorted([os.path.join(path, "Noisy", i) for i in os.listdir(os.path.join(path, "Noisy"))])
-        else:
-            self.images = sorted([os.path.join(path, "Clean", i) for i in os.listdir(os.path.join(path, "Clean"))])
-            self.labels = sorted([os.path.join(path, "Noisy", i) for i in os.listdir(os.path.join(path, "Noisy"))])
+        self.images = sorted([os.path.join(path, "Clean", i) for i in os.listdir(os.path.join(path, "Clean"))])
+        self.labels = sorted([os.path.join(path, "Noisy", i) for i in os.listdir(os.path.join(path, "Noisy"))])
 
         self.transforms = A.Compose([
             A.Resize(512, 512),
@@ -26,7 +22,7 @@ class seg_dataset(Dataset):
         ], additional_targets={'mask': 'mask'}, is_check_shapes=True)
 
     def __getitem__(self, index):
-        img = np.array(Image.open(self.images[index]).convert('RGB'), dtype=np.uint8)
+        img = np.array(Image.open(self.images[index]).convert('L'), dtype=np.uint8)
         mask = np.array(Image.open(self.labels[index]).convert('L'), dtype=np.uint8)
         aug = self.transforms(image=img, mask=mask)
 
